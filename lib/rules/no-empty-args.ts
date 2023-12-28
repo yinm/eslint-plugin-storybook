@@ -40,11 +40,47 @@ export = createStorybookRule({
 
   create(context) {
     //----------------------------------------------------------------------
+    // Helpers
+    //----------------------------------------------------------------------
+    const validateObjectExpression = (node: TSESTree.ObjectExpression) => {
+      const argsNode = node.properties.find(
+        (prop) => isProperty(prop) && isIdentifier(prop.key) && prop.key.name === 'args'
+      )
+      if (typeof argsNode === 'undefined') return
+
+      if (
+        !isSpreadElement(argsNode) &&
+        isObjectExpression(argsNode.value) &&
+        argsNode.value.properties.length === 0
+      ) {
+        context.report({
+          node: argsNode,
+          messageId: 'detectEmptyArgs',
+          suggest: [
+            {
+              messageId: 'removeEmptyArgs',
+              fix(fixer) {
+                console.log(argsNode)
+                return fixer.remove(argsNode)
+              },
+            },
+          ],
+        })
+      }
+    }
+
+    //----------------------------------------------------------------------
     // Public
     //----------------------------------------------------------------------
-
     return {
       // CSF3
+      ExportDefaultDeclaration(node) {
+        const declaration = node.declaration
+        if (!isObjectExpression(declaration)) return
+
+        validateObjectExpression(declaration)
+      },
+
       ExportNamedDeclaration: function (node: TSESTree.ExportNamedDeclaration) {
         const declaration = node.declaration
         // if (!declaration) return
@@ -53,30 +89,9 @@ export = createStorybookRule({
         const init = declaration.declarations[0]?.init
         if (!isObjectExpression(init)) return
 
-        const argsNode = init.properties.find(
-          (prop) => isProperty(prop) && isIdentifier(prop.key) && prop.key.name === 'args'
-        )
-        if (typeof argsNode === 'undefined') return
-
-        if (
-          !isSpreadElement(argsNode) &&
-          isObjectExpression(argsNode.value) &&
-          argsNode.value.properties.length === 0
-        ) {
-          context.report({
-            node: argsNode,
-            messageId: 'detectEmptyArgs',
-            suggest: [
-              {
-                messageId: 'removeEmptyArgs',
-                fix(fixer) {
-                  return fixer.remove(argsNode)
-                },
-              },
-            ],
-          })
-        }
+        validateObjectExpression(init)
       },
+
       // CSF2
       AssignmentExpression(node) {
         const { left, right } = node

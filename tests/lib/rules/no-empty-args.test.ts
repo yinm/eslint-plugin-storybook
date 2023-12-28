@@ -24,6 +24,11 @@ ruleTester.run('no-empty-args', rule, {
    */
   valid: [
     // CSF3
+    `
+      export default {
+        component: Button,
+      }
+    `,
     "export const PrimaryButton = { args: {foo: 'bar'} }",
     "export const PrimaryButton: Story = { args: {foo: 'bar'} }",
     `
@@ -42,6 +47,31 @@ ruleTester.run('no-empty-args', rule, {
   ],
   invalid: [
     // CSF3
+    {
+      code: dedent`
+        export default {
+          component: Button,
+          args: {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'detectEmptyArgs',
+          type: AST_NODE_TYPES.Property,
+          suggestions: [
+            {
+              messageId: 'removeEmptyArgs',
+              output: dedent`
+                export default {
+                  component: Button,
+                  
+                }
+              `,
+            },
+          ],
+        },
+      ],
+    },
     {
       code: 'export const PrimaryButton = { args: {} }',
       errors: [
