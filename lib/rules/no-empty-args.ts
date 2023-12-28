@@ -36,18 +36,10 @@ export = createStorybookRule({
     },
     fixable: 'code',
     hasSuggestions: true,
-    schema: [], // Add a schema if the rule has options. Otherwise remove this
+    schema: [],
   },
 
   create(context) {
-    // variables should be defined here
-
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
-
-    // any helper functions should go here or else delete this section
-
     //----------------------------------------------------------------------
     // Public
     //----------------------------------------------------------------------
