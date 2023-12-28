@@ -61,6 +61,7 @@ ruleTester.run('no-empty-args', rule, {
           suggestions: [
             {
               messageId: 'removeEmptyArgs',
+              // TODO: Fix output indent (it's failed when format fix)
               output: dedent`
                 export default {
                   component: Button,
