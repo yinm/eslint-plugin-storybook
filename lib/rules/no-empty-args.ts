@@ -23,12 +23,12 @@ export = createStorybookRule({
   name: 'no-empty-args',
   defaultOptions: [],
   meta: {
-    type: 'problem', // `problem`, `suggestion`, or `layout`
+    type: 'suggestion',
     docs: {
       description: 'A story should not have an empty args property',
       // Add the categories that suit this rule.
       categories: [CategoryId.RECOMMENDED],
-      recommended: 'warn', // `warn` or `error`
+      recommended: 'warn',
     },
     messages: {
       detectEmptyArgs: 'Empty args should be removed as it is meaningless',
