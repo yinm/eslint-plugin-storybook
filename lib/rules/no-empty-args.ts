@@ -31,6 +31,7 @@ export = createStorybookRule({
     },
     messages: {
       anyMessageIdHere: 'Fill me in',
+      removeEmptyArgs: 'Remove empty args',
     },
     fixable: 'code',
     hasSuggestions: true,
@@ -73,6 +74,14 @@ export = createStorybookRule({
           context.report({
             node: argsNode,
             messageId: 'anyMessageIdHere',
+            suggest: [
+              {
+                messageId: 'removeEmptyArgs',
+                fix(fixer) {
+                  return fixer.remove(argsNode)
+                },
+              },
+            ],
           })
         }
       },

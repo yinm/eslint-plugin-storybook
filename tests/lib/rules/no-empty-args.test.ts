@@ -7,6 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
+import { AST_NODE_TYPES } from '@typescript-eslint/utils'
 import rule from '../../../lib/rules/no-empty-args'
 import ruleTester from '../../utils/rule-tester'
 
@@ -34,6 +35,13 @@ ruleTester.run('no-empty-args', rule, {
       errors: [
         {
           messageId: 'anyMessageIdHere', // comes from the rule file
+          type: AST_NODE_TYPES.Property,
+          suggestions: [
+            {
+              messageId: 'removeEmptyArgs',
+              output: 'export const PrimaryButton = {  }',
+            },
+          ],
         },
       ],
     },
