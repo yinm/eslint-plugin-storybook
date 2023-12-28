@@ -70,6 +70,7 @@ ruleTester.run('no-empty-args', rule, {
           suggestions: [
             {
               messageId: 'removeEmptyArgs',
+              // TODO: remove newline for matching actual result
               output: dedent`
                 export const PrimaryButton = (args) => <Button {...args} />
 
