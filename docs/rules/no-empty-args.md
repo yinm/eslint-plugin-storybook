@@ -1,6 +1,9 @@
 # no-empty-args
 
 <!-- RULE-CATEGORIES:START -->
+
+**Included in these configurations**: <ul><li>recommended</li><li>csf</li></ul>
+
 <!-- RULE-CATEGORIES:END -->
 
 ## Rule Details
@@ -10,17 +13,13 @@ A story should not have an empty args property.
 Examples of **incorrect** code for this rule:
 
 ```js
-
 // fill me in
-
 ```
 
 Examples of **correct** code for this rule:
 
 ```js
-
 // fill me in
-
 ```
 
 ### Options
