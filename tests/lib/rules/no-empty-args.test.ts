@@ -10,6 +10,7 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils'
 import rule from '../../../lib/rules/no-empty-args'
 import ruleTester from '../../utils/rule-tester'
+import dedent from 'ts-dedent'
 
 //------------------------------------------------------------------------------
 // Tests
@@ -22,14 +23,25 @@ ruleTester.run('no-empty-args', rule, {
    * Use https://eslint.org/docs/developer-guide/working-with-rules for Eslint API reference
    */
   valid: [
+    // CSF3
     "export const PrimaryButton = { args: {foo: 'bar'} }",
     "export const PrimaryButton: Story = { args: {foo: 'bar'} }",
     `
       const Default = {}
       export const PrimaryButton = { ...Default, args: {foo: 'bar'} }
     `,
+    // CSF2
+    `
+      export const PrimaryButton = (args) => <Button {...args} />
+      PrimaryButton.args = { primary: true }
+    `,
+    `
+      export const PrimaryButton = Template.bind({})
+      PrimaryButton.storyName = 'The Primary Button'
+    `,
   ],
   invalid: [
+    // CSF3
     {
       code: 'export const PrimaryButton = { args: {} }',
       errors: [
@@ -40,6 +52,28 @@ ruleTester.run('no-empty-args', rule, {
             {
               messageId: 'removeEmptyArgs',
               output: 'export const PrimaryButton = {  }',
+            },
+          ],
+        },
+      ],
+    },
+    // CSF2
+    {
+      code: dedent`
+        export const PrimaryButton = (args) => <Button {...args} />
+        PrimaryButton.args = {}
+      `,
+      errors: [
+        {
+          messageId: 'detectEmptyArgs',
+          type: AST_NODE_TYPES.AssignmentExpression,
+          suggestions: [
+            {
+              messageId: 'removeEmptyArgs',
+              output: dedent`
+                export const PrimaryButton = (args) => <Button {...args} />
+
+              `,
             },
           ],
         },
