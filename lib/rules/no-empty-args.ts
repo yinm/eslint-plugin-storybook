@@ -30,7 +30,7 @@ export = createStorybookRule({
       recommended: 'warn', // `warn` or `error`
     },
     messages: {
-      anyMessageIdHere: 'Fill me in',
+      detectEmptyArgs: 'Empty args should be removed as it is meaningless',
       removeEmptyArgs: 'Remove empty args',
     },
     fixable: 'code',
@@ -73,7 +73,7 @@ export = createStorybookRule({
         ) {
           context.report({
             node: argsNode,
-            messageId: 'anyMessageIdHere',
+            messageId: 'detectEmptyArgs',
             suggest: [
               {
                 messageId: 'removeEmptyArgs',

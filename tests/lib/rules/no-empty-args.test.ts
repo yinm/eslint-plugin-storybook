@@ -34,7 +34,7 @@ ruleTester.run('no-empty-args', rule, {
       code: 'export const PrimaryButton = { args: {} }',
       errors: [
         {
-          messageId: 'anyMessageIdHere', // comes from the rule file
+          messageId: 'detectEmptyArgs',
           type: AST_NODE_TYPES.Property,
           suggestions: [
             {
